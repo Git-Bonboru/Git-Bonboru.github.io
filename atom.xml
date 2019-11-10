@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+  <title>Aqua Blue&#39;s BLOG</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2019-11-10T09:05:56.109Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>Aqua Blue</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://yoursite.com/2019/11/09/hello-world/"/>
+    <id>http://yoursite.com/2019/11/09/hello-world/</id>
+    <published>2019-11-09T13:19:20.772Z</published>
+    <updated>2019-11-10T09:05:56.109Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="赛云，我喜欢你呀！"><a href="#赛云，我喜欢你呀！" class="headerlink" title="赛云，我喜欢你呀！"></a>赛云，我喜欢你呀！</h2>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;赛云，我喜欢你呀！&quot;&gt;&lt;a href=&quot;#赛云，我喜欢你呀！&quot; class=&quot;headerlink&quot; title=&quot;赛云，我喜欢你呀！&quot;&gt;&lt;/a&gt;赛云，我喜欢你呀！&lt;/h2&gt;
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+</feed>
