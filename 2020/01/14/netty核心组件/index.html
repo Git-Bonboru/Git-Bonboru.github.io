@@ -105,7 +105,8 @@
 <meta property="og:description" content="Netty核心组件包括：  Bootstrap和ServerBootStrap Channel ChannelHandler">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;14&#x2F;netty%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6&#x2F;channelHandler.jpg">
-<meta property="og:updated_time" content="2020-01-14T12:54:26.125Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;14&#x2F;netty%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6&#x2F;ChannelPipeline.jpg">
+<meta property="og:updated_time" content="2020-01-14T13:19:49.778Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;14&#x2F;netty%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6&#x2F;channelHandler.jpg">
 
@@ -459,10 +460,9 @@
 <p>Bootstrap用来连接远程主机，有一个EventLoopGroup。<br>ServerBootstrap用来绑定本地端口，有两个EventLoopGroup。<br>“ServerBootstrap”在服务器间厅柜一个端口轮询客户端的“Bootstrap”或DatagramChannel是否连接服务器。通常需要调用“Bootstrap”类的connect()方法，但是也可以先调用bind()再调用connect()进行连接，之后使用的Channel包含在bind()返回的ChannelFuture中。</p>
 <p>一个ServerBootstrap可以认为有2个Channel集合，第一个集合包含一个单例ServerChannel，代表持有一个绑定了本地端口的socket，第二个集合包含所有创建的Channel，处理服务器所接收到的客户端进来的连接。</p>
 <p>与ServerChannel相关EventGroup分配一个EventLoop负责创建Channels用于传入的连接请求。一旦连接接受，第二个EventLoopGroup分配一个EventLoop给它的Channel。</p>
-<h3 id="ChannelHandler和ChannelPipeline"><a href="#ChannelHandler和ChannelPipeline" class="headerlink" title="ChannelHandler和ChannelPipeline"></a>ChannelHandler和ChannelPipeline</h3><p>ChannelPipeline 是 ChannelHandler 链的容器。<br>在许多方面的 ChannelHandler 是在您的应用程序的核心，尽管有时它 可能并不明显。ChannelHandler 支持广泛的用途，使它难以界定。因此，最好是把它当作一个通用的容器，处理进来的事件（包括数据）并且通过ChannelPipeline。下图展示了 ChannelInboundHandler 和 ChannelOutboundHandler 继承自父接口 ChannelHandler。</p>
-<p>下图展示了 ChannelInboundHandler 和 ChannelOutboundHandler 继承自父接口 ChannelHandler。<img src="/2020/01/14/netty%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/channelHandler.jpg" alt="channelHandler"></p>
+<h3 id="ChannelHandler和ChannelPipeline"><a href="#ChannelHandler和ChannelPipeline" class="headerlink" title="ChannelHandler和ChannelPipeline"></a>ChannelHandler和ChannelPipeline</h3><p>ChannelPipeline 是 ChannelHandler 链的容器。<br>在许多方面的 ChannelHandler 是在您的应用程序的核心，尽管有时它 可能并不明显。ChannelHandler 支持广泛的用途，使它难以界定。因此，最好是把它当作一个通用的容器，处理进来的事件（包括数据）并且通过ChannelPipeline。下图展示了 ChannelInboundHandler 和 ChannelOutboundHandler 继承自父接口 ChannelHandler。<img src="/2020/01/14/netty%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/channelHandler.jpg" alt="channelHandler"></p>
 <p>Netty 中有两个方向的数据流，入站(ChannelInboundHandler)和出站(ChannelOutboundHandler)，它们之间有一个明显的区别：若数据是从用户应用程序到远程主机则是“出站(outbound)”，相反若数据时从远程主机到用户应用程序则是“入站(inbound)”。</p>
-<p>为了使数据从一端到达另一端，一个或多个 ChannelHandler 将以某种方式操作数据。这些 ChannelHandler 会在程序的“引导”阶段被添加ChannelPipeline中，并且被添加的顺序将决定处理数据的顺序。<br>![ChannelPipeline ](netty核心组件/ChannelPipeline .jpg)</p>
+<p>为了使数据从一端到达另一端，一个或多个 ChannelHandler 将以某种方式操作数据。这些 ChannelHandler 会在程序的“引导”阶段被添加ChannelPipeline中，并且被添加的顺序将决定处理数据的顺序。<br><img src="/2020/01/14/netty%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/ChannelPipeline.jpg" alt="ChannelPipeline "></p>
 <p>上图同样展示了进站和出站的处理器都可以被安装在相同的 pipeline 。如果消息或任何其他入站事件被读到，将从 pipeline 头部开始，传递到第一个 ChannelInboundHandler。该处理器可能会或可能不会实际修改数据，取决于其特定的功能，在这之后 该数据将被传递到链中的下一个 ChannelInboundHandler。最后，将数据 到达 pipeline 的尾部，此时所有处理结束。</p>
 <p>数据的出站运动（即，数据被“写入”）在概念上是相同的。在这种情况下的数据从尾部流过 ChannelOutboundHandlers 的链，直到它到达头部。超过这点，出站数据将到达的网络传输，在这里显示为一个 socket。通常，这将触发一个写入操作。</p>
 <p>在当前的链（chain）中，事件可以通过ChanneHandlerContext 传递给下一个 handler。Netty 为此提供了抽象基类ChannelInboundHandlerAdapter 和 ChannelOutboundHandlerAdapter，用来处理你想要的事件。 这些类提供的方法的实现，可以简单地通过调用 ChannelHandlerContext 上的相应方法将事件传递给下一个 handler。在实际应用中，您可以按需覆盖相应的方法即可。</p>
@@ -510,7 +510,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/01/14/Spring%E5%AE%9E%E6%88%98%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="prev" title="Spring实战 阅读笔记（二） 装配Bean">
+              <a href="/2020/01/14/Spring%E5%AE%9E%E6%88%98%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="prev" title="Spring实战 阅读笔记（二） 装配Bean">
                 Spring实战 阅读笔记（二） 装配Bean <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -771,7 +771,7 @@ show_date_time();
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共8.4k字</span>
+  <span class="post-count">博客全站共8.3k字</span>
 </div>
         
 
