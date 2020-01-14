@@ -1,8 +1,307 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2019/11/09/hello-world/</url>
-    <content><![CDATA[<h2 id="This-is-my-blog！"><a href="#This-is-my-blog！" class="headerlink" title="This is my blog！"></a>This is my blog！</h2>]]></content>
+    <title>Spring实战 阅读笔记（一） 什么是Spring</title>
+    <url>/2020/01/14/Spring%E5%AE%9E%E6%88%98%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<p>Spring是一个开源框架，是为了解决企业级应用开发的复杂性而创建的，致力于全方位简化Java开发，任何Java应用都能在简单性、可测试性和松耦合等方面从Spring中获益。<a id="more"></a></p>
+<p>为了降低Java开发的复杂性，Spring采用了以下4种关键策略：</p>
+<ul>
+<li>基于POJO的轻量级和最小侵入性编程</li>
+<li>通过依赖注入和面向接口编程实现松耦合</li>
+<li>通过切面和惯例进行声明式编程</li>
+<li>通过切面和模板减少样板式代码</li>
+</ul>
+<h4 id="非侵入性"><a href="#非侵入性" class="headerlink" title="非侵入性"></a>非侵入性</h4><p>Spring竭力避免因自身的API而弄乱你的应用代码。Spring不会强迫你实现Spring规范的接口或继承Spring规范的类，相反，在基于Spring构建的应用中，它的类通常没有任何痕迹表明你使用了Spring。最坏的场景是，一个类或许会使用Spring注解，但它依旧是POJO。 Spring的非侵入编程模型意味着这个类在Spring 应用和非Spring应用中都可以发挥同样的作用。 </p>
+<h4 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h4><p>任何一个有实际意义的应用都会由两个或者更多的类组成，这些类相互之间进行协作来完成特定的业务逻辑。按照传统的做法，每个对象负责管理与自己相互协作的对象（即它锁依赖的对象的引用），这将会导致高度耦合和难以测试的代码。</p>
+<p>耦合具有两面性（two-headed beast）。一方面，紧密耦合的代码难以测试、难以复用、难以理解，并且典型地表现出“打地鼠”式的bug特性 （修复一个bug，将会出现一个或者更多新的bug）。另一方面，一定程度的耦合又是必须的——完全没有耦合的代码什么也做不了。为了完成有实际意义的功能，不同的类必须以适当的方式进行交互。总而言之，耦合是必须的，但应当被小心谨慎地管理。</p>
+<p>通过DI，对象的依赖关系将由系统中负责协调各对象的第三方组件在创建对象的时候进行设定。对象无需自行创建或管理它们的依赖关系，依赖关系将被自动注入到需要它们的对象当中去。</p>
+<p>创建应用组件之间协作的行为通常称为装配（wiring）。Spring有多种装配bean的方式，采用XML是很常见的一种装配方式，同时Spring还支持使用Java来描述配置。</p>
+<p>Spring通过应用上下文（Application Context）装载bean的定义并把它们组装起来。Spring应用上下文全权负责对象的创建和组装。Spring自带了多种应用上下文的实现，它们之间主要的区别仅仅在于如何加载配置。![加载spring上下文](Spring实战 阅读笔记（一）/加载spring上下文.png)</p>
+<h4 id="应用切面"><a href="#应用切面" class="headerlink" title="应用切面"></a>应用切面</h4><p>DI能够让相互协作的软件组件保持松散耦合，而面向切面编程（aspect-oriented programming，AOP）允许你把遍布应用各处的功能分离出来形成可重用的组件。</p>
+<p>面向切面编程往往被定义为促使软件系统实现关注点的分离一项技术。系统由许多不同的组件组成，每一个组件各负责一块特定功能。除了实现自身核心的功能之外，这些组件还经常承担着额外的职责。诸如日志、事务管理和安全这样的系统服务经常融入到自身具有核心业务逻辑的组件中去，这些系统服务通常被称为横切关注点，因为它们会跨越系统的多个组件。 </p>
+<p>AOP能够使这些服务模块化，并以声明的方式将它们应用到它们需要影响的组件中去。所造成的结果就是这些组件会具有更高的内聚性并且会更加关注自身的业务，完全不需要了解涉及系统服务所带来复杂性。总之，AOP能够确保POJO的简单性。 ![声明一个切面](Spring实战 阅读笔记（一）/声明一个切面.png)</p>
+<h4 id="Spring容器"><a href="#Spring容器" class="headerlink" title="Spring容器"></a>Spring容器</h4><p>在基于Spring的应用中，对象生存于Spring容器（container）中。Spring容器负责创建对象，装配它们，配置它们并管理它们的整个生命周期，从生存到死亡。</p>
+<p>容器是Spring框架的核心。Spring容器使用DI管理构成应用的组件，它会创建相互协作的组件之间的关联。Spring容器并不是只有一个。Spring自带了多个容器实现，可以归为两种不同的类型。bean工厂（由org.springframework. beans. factory.BeanFactory接口定义）是最简单的容器，提供基本的DI支持。应用上下文 （由org.springframework.context.ApplicationContext接口定义）基于BeanFactory构建，并提供应用框架级别的服务，例如从 属性文件解析文本信息以及发布应用事件给感兴趣的事件监听者。 </p>
+<h5 id="使用应用上下文"><a href="#使用应用上下文" class="headerlink" title="使用应用上下文"></a>使用应用上下文</h5><p>Spring自带了多种类型的应用上下文：</p>
+<ul>
+<li><p>AnnotationConfigApplicationContext：从一个或多个基于Java的配置类中加载Spring应用上下文。 </p>
+</li>
+<li><p>AnnotationConfigWebApplicationContext：从一个或多个基于Java的配置类中加载Spring Web应用上下文。</p>
+</li>
+<li><p>ClassPathXmlApplicationContext：从类路径下的一个或多个XML配置文件中加载上下文定义，把应用上下文的定义文件作为类资源。</p>
+</li>
+<li><p>FileSystemXmlapplicationcontext：从文件系统下的一个或多个XML配置文件中加载上下文定义。</p>
+</li>
+<li><p>XmlWebApplicationContext：从Web应用下的一个或多个XML配置文件中加载上下文定义。</p>
+</li>
+</ul>
+<p>无论是从文件系统中装载应用上下文还是从类路径下装载应用上下文，将bean加载到bean工厂的过程都是相似的。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ApplicationContent content = <span class="keyword">new</span> FileSystemXmlApplicationContent(<span class="string">"c:/demo.xml"</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ApplicationContent content = new ClassPathXmlApplicationContent(&quot;demo.xml&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>应用上下文准备就绪之后，我们就可以调用上下文的getBean()方法从Spring容器中获取bean。 </p>
+<p>在传统的Java应用中，bean的生命周期很简单。使用Java关键字new进行bean实例化，然后该bean就可以使用了。一旦该bean不再被使用， 则由Java自动进行垃圾回收。</p>
+<h5 id="Bean的生命周期"><a href="#Bean的生命周期" class="headerlink" title="Bean的生命周期"></a>Bean的生命周期</h5><p>在传统的Java应用中，bean的生命周期很简单。使用Java关键字new进行bean实例化，然后该bean就可以使用了。一旦该bean不再被使用，则由Java自动进行垃圾回收。相比之下，Spring容器中的bean的生命周期就显得相对复杂多了。![bean的生命周期](Spring实战 阅读笔记（一）/bean的生命周期.png)</p>
+<ol>
+<li>Spring对bean进行实例化</li>
+<li>Spring将值和bean的引用注入到bean对应的属性中</li>
+<li>如果bean实现了BeanNameAware接口，Spring将bean的ID传递给setBean-Name()方法</li>
+<li>如果bean实现了BeanFactoryAware接口，Spring将调用setBeanFactory()方法，将BeanFactory容器实例传入</li>
+<li>如果bean实现了ApplicationContextAware接口，Spring将调用setApplicationContext()方法，将bean所在的应用上下文的 引用传入进来</li>
+<li>如果bean实现了BeanPostProcessor接口，Spring将调用它们的post-ProcessBeforeInitialization()方法</li>
+<li>如果bean实现了InitializingBean接口，Spring将调用它们的after-PropertiesSet()方法。类似地，如果bean使用init- method声明了初始化方法，该方法也会被调用</li>
+<li>如果bean实现了BeanPostProcessor接口，Spring将调用它们的post-ProcessAfterInitialization()方法</li>
+<li>此时，bean已经准备就绪，可以被应用程序使用了，它们将一直驻留在应用上下文中，直到该应用上下文被销毁</li>
+<li>如果bean实现了DisposableBean接口，Spring将调用它的destroy()接口方法。同样，如果bean使用destroy-method声明了销毁方法，该方法也会被调用</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>Spring实战 阅读笔记（二） 装配Bean</title>
+    <url>/2020/01/14/Spring%E5%AE%9E%E6%88%98%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+    <content><![CDATA[<p>创建应用对象之间协作关系的行为通常称为装配（wiring），这也是依赖注入（DI）的本质。<a id="more"></a></p>
+<h4 id="Spring配置的可选方案"><a href="#Spring配置的可选方案" class="headerlink" title="Spring配置的可选方案"></a>Spring配置的可选方案</h4><p>Spring提供了三种主要装配机制：</p>
+<ul>
+<li>在XML中进行显式配置</li>
+<li>在Java中进行显式配置</li>
+<li>隐式的bean发现机制和自动装配</li>
+</ul>
+<p>Spring的配置风格 是可以互相搭配的，所以你可以选择使用XML装配一些bean，使用Spring基于Java的配置（JavaConfig）来装配另一些bean，而将剩余的bean让Spring去自动发现。</p>
+<p>建议尽可能地使用自动配置的机制，显示胚子越少越好。当必须要显示配置bean的时候，推荐使用类型安全并且比XML更加强大的JavaConfig。只有当你想要使用便利的XML命名空间，并且在JavaConfig中并没有同样的实现时，才因该使用XML。 </p>
+<h4 id="自动化装配bean"><a href="#自动化装配bean" class="headerlink" title="自动化装配bean"></a>自动化装配bean</h4><p>Spring从两个角度来实现自动化装配：</p>
+<ul>
+<li>组件扫描（component scanning）：Spring会自动发现应用上下文中所创建的bean</li>
+<li>自动装配（autowiring）：Spring自动满足bean之间的依赖</li>
+</ul>
+<p>组件扫描和自动装配组合在一起，能够将你的显式配置降低到最少。</p>
+<h5 id="创建可被发现的bean"><a href="#创建可被发现的bean" class="headerlink" title="创建可被发现的bean"></a>创建可被发现的bean</h5><p>通过在类上使用@Component注解，该注解表明该类会作为组件类，并告知Spring要为这个类创建bean。没必要显示的配置bean，只要这个类使用了@Component注解，Spring会为你把事情处理妥当。不过，组件扫描默认是不启动的，我们需要显式配置一下Spring，从而命令它去寻找带有@Component注解的类，并为其创建bean。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CDPlayerConfig</span></span>&#123; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>CDPlayerConfig类通过Java代码定义了Spring的装配规则，该类并没有显示地声明任何bean，只不过它使用了@ComponentScan注解，这个注解能够在Spring中启用组件扫描。如果没有其它配置，@ComponentScan默认会扫描与配置类相同的包。因CDPlayerConfig在demo包。中，所以spring将会扫描这个包以及这个包虾苗的所有子包，查找带有@Component注解的类，并自动为其创建一个bean。</p>
+<p>当然我们也可以使用XML来启用组件扫描。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&lt;context:component-scan base-<span class="keyword">package</span>=<span class="string">"demo"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="为组件扫描的bean命名"><a href="#为组件扫描的bean命名" class="headerlink" title="为组件扫描的bean命名"></a>为组件扫描的bean命名</h5><p>Spring应用上下文中所有的bean都会给定一个ID。如果我们没有明确地为bean设置ID，Spring会根据类名为其指定一个ID，也就是将类名的第一个字母变为小写。</p>
+<p>如果想为这个bean设置不同的ID，可以将@Component注解配置如下所示：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CompactDisc</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">play</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span>(<span class="string">"lonelyHeartsClub"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">sgtPepers</span> <span class="keyword">implements</span> <span class="title">CompactDisc</span></span>&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置组件扫描的基础包"><a href="#设置组件扫描的基础包" class="headerlink" title="设置组件扫描的基础包"></a>设置组件扫描的基础包</h5><p>按照默认规则，@ComponentScan会以配置类所在的包作为基础包（base package）来扫描组件。当我们想指定不同的基础包，只要在@ComponentScan的value属性中指明包的名称：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(<span class="string">"demo"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CDPlayerConfig</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你想更加清晰地表明你所设置的是基础包，那么你可以通过basePackages属性进行配置： </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackages=<span class="string">"demo"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CDPlayerConfig</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们页可以设置多个基础包，只需要将basePackages属性设置为要扫描包的一个数组即可： </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackages=&#123;<span class="string">"demo"</span>,<span class="string">"video"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CDPlayerConfig</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>除了将包设置为简单的String类型之外，@ComponentScan还提供了另外一种方法，那就是将其指定为包中所包含的类或接口，这些类所在的包将会作为组件扫描的基础包： </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackageClasses=&#123;<span class="string">"CDPlayer.class"</span>,<span class="string">"DVDPlayer.class"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CDPlayerConfig</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="通过为bean添加注解实现自动装配"><a href="#通过为bean添加注解实现自动装配" class="headerlink" title="通过为bean添加注解实现自动装配"></a>通过为bean添加注解实现自动装配</h5><p>简单来说，自动装配就是让Spring自动满足bean依赖的一种方法，在满足依赖的过程中，会在Spring应用上下文中寻找匹配某个bean需求的其他bean。为了声明要进行自动装配，我们可以借助Spring的@Autowired注解。 </p>
+<p>如以下程序，CDPlayer类的构造器上添加了@Autowired注解，这这表明当Spring创建CDPlayerbean的时候，会通过这个构造器来进行实例化并且会传入一个可设置给CompactDisc类型的bean。 </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CDPlayer</span> <span class="title">implement</span> <span class="title">MediaPlayer</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> CompactDisc cd;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CDPlayer</span><span class="params">(CompactDisc cd)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.cd = cd;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span></span>&#123;</span><br><span class="line">        cd.play();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>@Autowired注解不仅能够用在构造器上，还能用在属性的Setter方法上。在Spring初始化bean之后，它会尽可能得去满足bean的依赖，不管是构造器、Setter方法还是其他的方法，Spring都会尝试满足方法参数上所声明的依赖。假如有且只有一个bean匹配依赖需求的话，那么这个bean将会被装配进来。如果没有匹配的bean，那么在应用上下文创建的时候，Spring会抛出一个异常。为了避免异常的出现，你可以将@Autowired的required属性设置为false：</p>
+<p>将required属性设置为false时，Spring会尝试执行自动装配，但是如果没有匹配的bean的话，Spring将会让这个bean处于未装配的状态。但是，把required属性设置为false时，你需要谨慎对待。如果在你的代码中没有进行null检查的话，这个处于未装配状态的属性有可能会出现NullPointerException。</p>
+<p> 如果有多个bean都能满足依赖关系的话，Spring将会抛出一个异常，表明没有明确指定要选择哪个bean进行自动装配。</p>
+<h4 id="通过Java代码装配bean"><a href="#通过Java代码装配bean" class="headerlink" title="通过Java代码装配bean"></a>通过Java代码装配bean</h4><p>尽管在很多场景下通过组件扫描和自动装配实现Spring的自动化配置是更为推荐的方式，但有时候自动化配置的方案行不通，因此需要明确配置Spring。比如说，你想要将第三方库中的组件装配到你的应用中，在这种情况下，是没有办法在它的类上添加@Component和@Autowired注解的，因此就不能使用自动化装配的方案了。</p>
+<p>在这种情况下，你必须要采用显式装配的方式。在进行显式配置的时候，有两种可选方案：Java和XML。在进行显式配置时，JavaConfig是更好的方案，因为它更为强大、类型安全并且对重构友好。因为它就是Java代码，就像应用程序中的其他Java代码一样。 </p>
+<p>同时，JavaConfig与其他的Java代码又有所区别，在概念上，它与应用程序中的业务逻辑和领域代码是不同的。尽管它与其他的组件一样都使用相同的语言进行表述，但JavaConfig是配置代码。这意味着它不应该包含任何业务逻辑，JavaConfig也不应该侵入到业务逻辑代码之中。尽管不是必须的，但通常会将JavaConfig放到单独的包中，使它与其他的应用程序逻辑分离开来，这样对于它的意图就不会产生困惑了。</p>
+<h5 id="创建配置类"><a href="#创建配置类" class="headerlink" title="创建配置类"></a>创建配置类</h5><p>创建JavaConfig类的关键在于为其添加@Configuration注解，@Configuration注解表明这个类是一个配置类，该类应该包含在Spring应用上下文中如何创建bean的细节。</p>
+<h5 id="声明简单的bean"><a href="#声明简单的bean" class="headerlink" title="声明简单的bean"></a>声明简单的bean</h5><p>要在JavaConfig中声明bean，我们需要编写一个方法，这个方法会创建所需类型的实例，然后给这个方法添加@Bean注解。</p>
+<p>@Bean注解会告诉Spring这个方法将会返回一个对象，该对象要注册为Spring应用上下文中的bean。方法体中包含了最终产生bean实例的逻辑。</p>
+<p>默认情况下，bean的ID与带有@Bean注解的方法名是一样的。如果你想为其设置成一个不同的名字的话，那么可以重命名该方法，也可以通过name属性指定一个不同的名字： </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span>(name=<span class="string">"sgtPeppersDemo"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> CompactDisc <span class="title">sgtPeppers</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> SgtPeppers();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="借助JavaConfig实现注入"><a href="#借助JavaConfig实现注入" class="headerlink" title="借助JavaConfig实现注入"></a>借助JavaConfig实现注入</h5><p>在JavaConfig中装配bean的最简单方式就是引用创建bean的方法。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> CDPlayer <span class="title">cdPlayer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> CDPlayer(sgtPeppers());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>cdPlayer()并没有使用默认的构造器构建实例，而是调用了需要传入CompactDisc对象的构造器来创建CDPlayer实例。看起来CompactDisc是通过调用sgtPeppers()得到的，但情况并非完全如此。因为sgtPeppers()方法上添加了@Bean注解，Spring将会拦截所有对它的调用，并确保直接返回该方法所创建的bean，而不是每次都对其进行实际的调用。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> CDPlayer <span class="title">cdPlayer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> CDPlayer(sgtPeppers());</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> CDPlayer <span class="title">anotherCDPlayer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> CDPlayer(sgtPeppers());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，Spring中的bean都是单例的，我们并没有必要为第二个CDPlayer bean创建完全相同的SgtPeppers实例。所以，Spring会拦截对sgtPeppers()的调用并确保返回的是Spring所创建的bean，也就是Spring本身在调用sgtPeppers()时所创建CompactDisc bean。因此，两个CDPlayer bean会得到相同的SgtPeppers实例。</p>
+<p>通过方法来引用bean的方式有点令人疑惑，其实还有一种理解起来更为简单的方式：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> CDPlayer <span class="title">cdPlayer</span><span class="params">(CompactDisc compactDisc)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> CDPlayer(compactDisc);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>cdPlayer()方法请求一个CompactDisc作为参数。当Spring调用cdPlayer()创建CDPlayerbean的时候，它会自动装配一个CompactDisc到配置方法之中。然后，方法体就可以按照合适的方式来使用它。借助这种技术，cdPlayer()方法也能够将CompactDisc注入到CDPlayer的构造器中，而且不用明确引用CompactDisc的@Bean方法。</p>
+<p>通过这种方式引用其他的bean通常是最佳的选择，因为它不会要求将CompactDisc声明到同一个配置类之中。在这里甚至没有要求CompactDisc必须要在JavaConfig中声明，实际上它可以通过组件扫描功能自动发现或者通过XML来进行配置。你可以将配置分散到多个配置类、XML文件以及自动扫描和装配bean之中，只要功能完整健全即可。不管CompactDisc是采用什么方式创建出来的，Spring都会将其传入到配置方法中，并用来创建CDPlayer bean。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Netty核心组件介绍</title>
+    <url>/2020/01/14/netty%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</url>
+    <content><![CDATA[<p>Netty核心组件包括：</p>
+<ul>
+<li>Bootstrap和ServerBootStrap</li>
+<li>Channel</li>
+<li>ChannelHandler<a id="more"></a></li>
+<li>ChannelPipeline</li>
+<li>EventLoop</li>
+<li>ChannelFuture</li>
+</ul>
+<h3 id="BOOTSTRAP"><a href="#BOOTSTRAP" class="headerlink" title="BOOTSTRAP"></a>BOOTSTRAP</h3><p>Netty应用程序通过设置bootstrap（引导）类的开始，该类提供了一个用于应用程序网络层配置的容器。</p>
+<h3 id="CHANNEL"><a href="#CHANNEL" class="headerlink" title="CHANNEL"></a>CHANNEL</h3><p>底层网络传输API必须提供给应用I/O操作的接口，如读，写，连接，绑定等等。对于我们来说，这些结构几乎总会是一个”socket”。Netty中的接口Channe定义了与socket丰富交互的操作集：bind，close，config，connect，isActive，isOpen，isWritablel，read，write等等。Netty提供大量的Channel实现来专门使用。这些包括AbstractChannel，AbstNioByteChannel，AbstractNioChannel，EmbeddedChannel，LocalServerChannel，NioSocketChannel等等。</p>
+<h3 id="CHANNELHANDLER"><a href="#CHANNELHANDLER" class="headerlink" title="CHANNELHANDLER"></a>CHANNELHANDLER</h3><p>ChannelHandler支持很多协议，并且提供用于书记处理的容器。我们已经知道ChannelHandler由特定的事件触发。Channelhandler可专用于几乎所有的动作，包括将一个对象转为字节（或相反）、执行过程中抛出的异常处理。</p>
+<p>常用的一个接口是ChannelInboundHandler，这个类型接收到入站事件（包括接收到的数据），可以用于处理应用程序逻辑。当你需要提供响应时，你也可以从ChannelInboundhandler冲刷数据。总之，业务逻辑经常存活于一个或多个ChannelInboundhandler。</p>
+<h3 id="CHANNELPIPELINE"><a href="#CHANNELPIPELINE" class="headerlink" title="CHANNELPIPELINE"></a>CHANNELPIPELINE</h3><p>ChannelPipeline提供了一个容器给ChannelHandler链，并提供了一个API用于管理沿着链入站和出站事件的流动。每个Channel都有自己的ChannelPipeline，并在Channel创建时自动创建。</p>
+<p>ChannelHandler又是如何安装在ChannelPipeline的呢？主要是实现了ChannelHandler的抽象ChannelInitializer。</p>
+<p>ChannelInitializer子类通过ServerBootstrap进行注册。当它的方法initChannel()被调用时，这个对象将安装自定义的ChannelHandler集到pipeline。当这个操作完成时，ChannlInitializer子类则从ChannelPipeline自动删除自身。</p>
+<h3 id="EVENTLOOP"><a href="#EVENTLOOP" class="headerlink" title="EVENTLOOP"></a>EVENTLOOP</h3><p>EventLoop用于处理Channel的I/O操作。一个单元的EventLoop通常会处理多个Channel事件。一个EventLoopGroup可以含有多于一个的EventLoop和提供了一种迭代用于检索清单中的下一个。</p>
+<h3 id="CHANNELFUTURE"><a href="#CHANNELFUTURE" class="headerlink" title="CHANNELFUTURE"></a>CHANNELFUTURE</h3><p>Netty所有的I/O操作都是异步。因为一个操作可能无法立即返回，我们需要有一种方法在以后确定它的结果。出于这个目的，Netty提供了接口ChannelFuture，它的addListener方法注册了一个ChannelFutureListener，当操作完成时，可以被通知（不管成功与否）。</p>
+<p>ChannelFuture对象作为一个未来执行操作结果的占位符。何时执行取决于几个因素，因此不可能预测与精确。但我们可以肯定的是，它会被执行。此外，所有属于同一个Channel的操作都被保证其将以它们被调用的顺序被执行。</p>
+<h3 id="Channel、Event和I-O"><a href="#Channel、Event和I-O" class="headerlink" title="Channel、Event和I/O"></a>Channel、Event和I/O</h3><p>Netty是一个非阻塞、事件驱动的网络框架，实际上是使用Threads（多线程）处理I/O事件。一个EventLoopGroup具有一个或多个EvevtLoop。想象EventLoop作为一个Thread给Channel执行工作。（一个EventLoop在它的生命周期内只和一个Thread绑定）。</p>
+<p>当创建一个Channel，Netty通过一个单独的EventLoop实例来注册该Channel（并同样是一个单独的Thread）的通道的使用寿命。这就是为什么你的应用程序不需要同步Netty的I/O操作，所有Channel的I/O始终用相同的线程来执行。</p>
+<h3 id="为什么要用Bootstrapping"><a href="#为什么要用Bootstrapping" class="headerlink" title="为什么要用Bootstrapping"></a>为什么要用Bootstrapping</h3><p>Bootstraping（引导）是Netty中配置程序的过程，当你需要连接客户端或服务器绑定指定端口时需要使用Bootstrapping。</p>
+<p>Bootstrapping有两种类型，一种是用于客户端的Bootstrap，一种是用于服务端的ServerBootstrap。不管程序使用哪种协议，无论是创建一个客户端还是服务器都需要使用“引导”。</p>
+<table>
+<thead>
+<tr>
+<th align="center">分类</th>
+<th align="center">Bootstrap</th>
+<th align="center">ServerBootstrap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">网络功能</td>
+<td align="center">连接到远程主机和端口</td>
+<td align="center">绑定本地端口</td>
+</tr>
+<tr>
+<td align="center">EventLoopGroup数量</td>
+<td align="center">1</td>
+<td align="center">2</td>
+</tr>
+</tbody></table>
+<p>Bootstrap用来连接远程主机，有一个EventLoopGroup。<br>ServerBootstrap用来绑定本地端口，有两个EventLoopGroup。<br>“ServerBootstrap”在服务器间厅柜一个端口轮询客户端的“Bootstrap”或DatagramChannel是否连接服务器。通常需要调用“Bootstrap”类的connect()方法，但是也可以先调用bind()再调用connect()进行连接，之后使用的Channel包含在bind()返回的ChannelFuture中。</p>
+<p>一个ServerBootstrap可以认为有2个Channel集合，第一个集合包含一个单例ServerChannel，代表持有一个绑定了本地端口的socket，第二个集合包含所有创建的Channel，处理服务器所接收到的客户端进来的连接。</p>
+<p>与ServerChannel相关EventGroup分配一个EventLoop负责创建Channels用于传入的连接请求。一旦连接接受，第二个EventLoopGroup分配一个EventLoop给它的Channel。</p>
+<h3 id="ChannelHandler和ChannelPipeline"><a href="#ChannelHandler和ChannelPipeline" class="headerlink" title="ChannelHandler和ChannelPipeline"></a>ChannelHandler和ChannelPipeline</h3><p>ChannelPipeline 是 ChannelHandler 链的容器。<br>在许多方面的 ChannelHandler 是在您的应用程序的核心，尽管有时它 可能并不明显。ChannelHandler 支持广泛的用途，使它难以界定。因此，最好是把它当作一个通用的容器，处理进来的事件（包括数据）并且通过ChannelPipeline。下图展示了 ChannelInboundHandler 和 ChannelOutboundHandler 继承自父接口 ChannelHandler。</p>
+<p>下图展示了 ChannelInboundHandler 和 ChannelOutboundHandler 继承自父接口 ChannelHandler。<img src="/2020/01/14/netty%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/channelHandler.jpg" alt="channelHandler"></p>
+<p>Netty 中有两个方向的数据流，入站(ChannelInboundHandler)和出站(ChannelOutboundHandler)，它们之间有一个明显的区别：若数据是从用户应用程序到远程主机则是“出站(outbound)”，相反若数据时从远程主机到用户应用程序则是“入站(inbound)”。</p>
+<p>为了使数据从一端到达另一端，一个或多个 ChannelHandler 将以某种方式操作数据。这些 ChannelHandler 会在程序的“引导”阶段被添加ChannelPipeline中，并且被添加的顺序将决定处理数据的顺序。<br>![ChannelPipeline ](netty核心组件/ChannelPipeline .jpg)</p>
+<p>上图同样展示了进站和出站的处理器都可以被安装在相同的 pipeline 。如果消息或任何其他入站事件被读到，将从 pipeline 头部开始，传递到第一个 ChannelInboundHandler。该处理器可能会或可能不会实际修改数据，取决于其特定的功能，在这之后 该数据将被传递到链中的下一个 ChannelInboundHandler。最后，将数据 到达 pipeline 的尾部，此时所有处理结束。</p>
+<p>数据的出站运动（即，数据被“写入”）在概念上是相同的。在这种情况下的数据从尾部流过 ChannelOutboundHandlers 的链，直到它到达头部。超过这点，出站数据将到达的网络传输，在这里显示为一个 socket。通常，这将触发一个写入操作。</p>
+<p>在当前的链（chain）中，事件可以通过ChanneHandlerContext 传递给下一个 handler。Netty 为此提供了抽象基类ChannelInboundHandlerAdapter 和 ChannelOutboundHandlerAdapter，用来处理你想要的事件。 这些类提供的方法的实现，可以简单地通过调用 ChannelHandlerContext 上的相应方法将事件传递给下一个 handler。在实际应用中，您可以按需覆盖相应的方法即可。</p>
+<p>虽然入站和出站处理器都扩展了ChannelHandler，但Netty 的 ChannelInboundHandler 的实现和ChannelOutboundHandler 之间的是有区别的，从而保证数据传递从一个处理器到下一个处理器类型的正确。</p>
+<p>当 ChannelHandler 被添加到的 ChannelPipeline 它得到一个 ChannelHandlerContext，它代表一个 ChannelHandler 和 ChannelPipeline 之间的“绑定”。它通常是安全保存对此对象的引用，除了当协议中的使用的是不面向连接（例如，UDP）。而该对象可以被用来获得底层 Channel,它主要是用来写出站数据。</p>
+<p>实际上，在 Netty 发送消息有两种方式。您可以直接写消息给 Channel 或写入 ChannelHandlerContext 对象。主要的区别是， 前一种方法会导致消息从 ChannelPipeline的尾部开始，而 后者导致消息从 ChannelPipeline 下一个处理器开始。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>MYSQL索引</title>
+    <url>/2020/01/14/Mysql%E7%B4%A2%E5%BC%95/</url>
+    <content><![CDATA[<p>索引用于快速找出在某个列中有一特定值的行，不使用索引，MySQL必须从第一条记录开始读完整个表，直到找出相关的行，表越大，查询数据所花费的时间就越多，如果表中查询的列有一个索引，MySQL能够快速到达一个位置去搜索数据文件，而不必查看所有数据，那么将会节省很大一部分时间。<a id="more"></a></p>
+<p>如果没有索引，那么将从表中第一条记录一条条往下遍历，直到找到该条信息为止。如果有了索引，那么会将该字段，通过一定的方法进行存储，好让查询该字段上的信息时，能够快速找到对应的数据，而不必在遍历全部的数据了。其中MySQL中的索引的存储类型有两种：BTREE、HASH。 也就是用树或者Hash值来存储该字段。</p>
+<h3 id="索引的优点和缺点"><a href="#索引的优点和缺点" class="headerlink" title="索引的优点和缺点"></a>索引的优点和缺点</h3><p>优点：</p>
+<ol>
+<li><p>所有的MySql列类型(字段类型)都可以被索引，也就是可以给任意字段设置索引</p>
+</li>
+<li><p>大大加快数据的查询速度</p>
+</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li><p>创建索引和维护索引要耗费时间，并且随着数据量的增加所耗费的时间也会增加</p>
+</li>
+<li><p>索引也需要占空间，我们知道数据表中的数据也会有最大上线设置的，如果我们有大量的索引，索引文件可能会比数据文件更快达到上线值</p>
+</li>
+<li><p>当对表中的数据进行增加、删除、修改时，索引也需要动态的维护，降低了数据的维护速度。</p>
+</li>
+</ol>
+<p>使用原则：</p>
+<ol>
+<li><p>对经常更新的表就避免对其进行过多的索引，对经常用于查询的字段应该创建索引</p>
+</li>
+<li><p>数据量小的表最好不要使用索引，因为由于数据较少，可能查询全部数据花费的时间比遍历索引的时间还要短，索引就可能不会产生优化效果。</p>
+</li>
+<li><p>在一同值少的列上(字段上)不要建立索引，比如在”性别”字段上只有男，女两个不同值。相反的，在一个字段上不同值较多可以建立索引。</p>
+</li>
+</ol>
+<h3 id="索引的分类"><a href="#索引的分类" class="headerlink" title="索引的分类"></a>索引的分类</h3><p>索引是在不同的引擎中实现的，也就是说不同的存储引擎会使用不同的索引</p>
+<p>MyISAM和InnoDB存储引擎：只支持BTREE索引， 也就是说默认使用BTREE，不能够更换；MEMORY/HEAP存储引擎：支持HASH和BTREE索引</p>
+<ol>
+<li>普通索引：MySQL中基本索引类型，没有什么限制，允许在定义索引的列中插入重复值和空值，纯粹为了查询数据更快一点</li>
+<li>唯一索引：索引列中的值必须是唯一的，但是允许为空值</li>
+<li>主键索引：是一种特殊的唯一索引，不允许有空值</li>
+<li>组合索引：在表中的多个字段组合上创建的索引，只有在查询条件中使用了这些字段的左边字段时，索引才会被使用，使用组合索引时遵循最左前缀集合</li>
+<li>全文索引：只有在MyISAM引擎上才能使用，只能在CHAR,VARCHAR,TEXT类型字段上使用全文索引。全文索引会对文本的内容进行分词，进行搜索，通俗来讲就是在一堆文字中，通过其中的某个关键字等，就能找到该字段所属的记录行，比如有”这是一条宠物狗…” ，通过宠物，可能就可以找到该条记录</li>
+<li>空间索引：对空间数据类型的字段建立的索引，只有在MyISAM引擎上才能使用，创建空间索引的列，必须将其声明为NOT NULL。MySQL中的空间数据类型有四种，GEOMETRY、POINT、LINESTRING、POLYGON。在创建空间索引时，使用SPATIAL关键字。</li>
+</ol>
+<p>​    </p>
+]]></content>
+  </entry>
+  <entry>
+    <title>CentOS下安装Docker</title>
+    <url>/2020/01/14/Docker%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<ol>
+<li>Docker 要求 CentOS 系统的内核版本高于 3.10，通过uname -r 命令查看当前的内核版本。</li>
+<li>以下所有命令执行都是在root用户下，如果是非root用户请加上<code>sudo</code>执行</li>
+<li>如果安装过Docker ,应先卸载<a id="more"></a></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>安装依赖设置yum仓库</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">安装依赖</span></span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"><span class="meta">#</span><span class="bash">设置仓库	由于国内网络原因，建议使用国内源</span></span><br><span class="line">yum-config-manager --add-repo https://mirrors.ustc.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">官方源</span></span><br><span class="line"><span class="meta">#</span><span class="bash">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>安装Docker CE</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>启动并加入开机自启</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl start docker</span><br><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>验证安装是否成功</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker version</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>建立docker用户组</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">建立docker组</span></span><br><span class="line">groupadd docker</span><br><span class="line"><span class="meta">#</span><span class="bash">将当前用户加入docker组</span></span><br><span class="line">usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>运行hello-world校验Docker安装是否成功</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run hello-world</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">出现以下信息说明安装成功</span></span><br><span class="line">Unable to find image 'hello-world:latest' locally</span><br><span class="line">latest: Pulling from library/hello-world</span><br><span class="line">d1725b59e92d: Pull complete</span><br><span class="line">Digest: sha256:0add3ace90ecb4adbf7777e9aacf18357296e799f81cabc9fde470971e499788</span><br><span class="line">Status: Downloaded newer image for hello-world:latest</span><br><span class="line"></span><br><span class="line">Hello from Docker!</span><br><span class="line">This message shows that your installation appears to be working correctly.</span><br><span class="line"></span><br><span class="line">To generate this message, Docker took the following steps:</span><br><span class="line"> 1. The Docker client contacted the Docker daemon.</span><br><span class="line"> 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.</span><br><span class="line">    (amd64)</span><br><span class="line"> 3. The Docker daemon created a new container from that image which runs the</span><br><span class="line">    executable that produces the output you are currently reading.</span><br><span class="line"> 4. The Docker daemon streamed that output to the Docker client, which sent it</span><br><span class="line">    to your terminal.</span><br><span class="line"></span><br><span class="line">To try something more ambitious, you can run an Ubuntu container with:</span><br><span class="line"><span class="meta"> $</span><span class="bash"> docker run -it ubuntu bash</span></span><br><span class="line"></span><br><span class="line">Share images, automate workflows, and more with a free Docker ID:</span><br><span class="line"> https://hub.docker.com/</span><br><span class="line"></span><br><span class="line">For more examples and ideas, visit:</span><br><span class="line"> https://docs.docker.com/get-started/</span><br></pre></td></tr></table></figure>
+
+<ol start="10">
+<li>设置国内镜像</li>
+</ol>
+<p><code>/etc/docker/daemon.json</code> 中写入如下内容（如果文件不存在请新建该文件）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   "registry-mirrors": [</span><br><span class="line">     "https://dockerhub.azk8s.cn",</span><br><span class="line">     "https://reg-mirror.qiniu.com"</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">重启服务</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br><span class="line"><span class="meta">#</span><span class="bash">查看是否配置成功</span></span><br><span class="line">docker info</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Netty基础</title>
+    <url>/2020/01/14/netty%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<p>Netty 是一个异步的、基于事件驱动的网络应用框架，用于开发高性能、高可靠性的网络IO程序。Netty本质是一个NIO框架，主要针对在TCP协议下，面向Clients端的高并发应用，或者Peer-to-Peer场景下的大量数据持续传输的应用，适用于服务器通讯相关的多种应用场景。<a id="more"></a></p>
+<h3 id="I-O模型"><a href="#I-O模型" class="headerlink" title="I/O模型"></a>I/O模型</h3><p>java共支持3钟网络编程模型I/O模式：BIO、NIO、AIO</p>
+<ol>
+<li><p>BIO：同步并阻塞，服务器实现模式为一个连接一个线程，即客户端有连接请求时服务器就需要启动一个线程来处理,如果这个连接不做任何事情会造成不必要的线程开销。<br><img src="/2020/01/14/netty%E5%9F%BA%E7%A1%80/bio.png" alt="bio模型"></p>
+</li>
+<li><p>NIO：同步非阻塞，服务器实现模式为一个线程处理多个请求(连接)，即客户端发送的连接请求会注册到多路复用器上，多路复用器轮询到连接有I/O请求就进行处理。<br><img src="/2020/01/14/netty%E5%9F%BA%E7%A1%80/nio.png" alt="nio模型"></p>
+</li>
+<li><p>AIO ：异步非阻塞，AIO引入异步通道的概念，采用Proactor模式，简化了程序编写，有效的请求才启动线程，它的特点是先由操作系统完成后才通知服务端程序启动线程去处理，一般用于连接数较多且来连接时间较长的应用。</p>
+</li>
+</ol>
+<h3 id="BIO编程"><a href="#BIO编程" class="headerlink" title="BIO编程"></a>BIO编程</h3><h4 id="BIO编程简单流程："><a href="#BIO编程简单流程：" class="headerlink" title="BIO编程简单流程："></a>BIO编程简单流程：</h4><ol>
+<li>服务器端启动一个ServerSocket。</li>
+<li>客户端启动Socket对服务器进行通讯，默认情况下服务器端需要对每个客户建立一个线程与之通信。</li>
+<li>客户端发出请求后，先咨询服务器是否有线程响应，如果没有则等待，或者被拒绝；如果有响应，客户端线程会等待请求结束后，在继续执行。</li>
+</ol>
+]]></content>
   </entry>
 </search>
